@@ -1,16 +1,28 @@
-# deno-rest-api
-A simple rest API made with Deno
+# Aidrop Merkle API
+Return data for check and claim airdrop
 
 ## run the app
 `deno run --allow-env --allow-net app.ts`
 
-## routes
+## CORS
+**Need change avaliable CORS address:**
+**origin**: your api address 
+
+```typescript
+app.use(
+  oakCors({
+    origin: "http://localhost:3000",
+    optionsSuccessStatus: 200,
+  })
+);
+```
+
+## Routes
 
 | Route                | Description              |
 | -------------------- | ------------------------ |
-| GET /books           | return all the books     |
-| GET /books/{isbn}    | return a book            |
-| POST /books          | add a book               |
-| PUT /books/{isbn}    | update a book            |
-| DELETE /books/{isbn} | delete a book            |
+| GET /users           | return all users         |
+| GET /user/{address}  | return a user            |
 
+---
+[codingsh](https://twitter.com/codingsh)

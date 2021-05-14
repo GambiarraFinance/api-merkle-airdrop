@@ -1,25 +1,4 @@
 
-
-interface IBook {
-  isbn: string;
-  author: string;
-  title: string;
-}
-
-let books: Array<IBook> = [{
-  isbn: "1",
-  author: "Robin Wieruch",
-  title: "The Road to React",
-},{
-  isbn: "2",
-  author: "Kyle Simpson",
-  title: "You Don't Know JS: Scope & Closures",
-},{
-  isbn: "3",
-  author: "Andreas A. Antonopoulos",
-  title: "Mastering Bitcoin",
-}]
-
 interface IUser {
   address: string;
   proof: string[];
@@ -27,6 +6,7 @@ interface IUser {
   index: string;
 }
 
+// change for your Merkle proof data 
 const airdrop = [
   {
     "merkleRoot": "0x6badc1b0e597887ee42d611117171508ca948711a05ea7aa494d21c3ab5fe877",
@@ -1430,21 +1410,6 @@ const getUsers = ({ response }: { response: any}) => {
   response.body = users
 }
 
-const getBooks = ({ response }: { response: any }) => {
-  response.body = books
-}
-
-const getBook = ({ params, response }: { params: { isbn: string }; response: any }) => {
-  const book: IBook | undefined = searchBookByIsbn(params.isbn)
-  if (book) {
-    response.status = 200
-    response.body = book
-  } else {
-    response.status = 404
-    response.body = { message: `Book not found.` }
-  }
-}
-
 const getUser = ({ params, response }: { params: { address: string }; response: any }) => {
   const user: IUser | undefined = searchUserByAddress(params.address)
   if (user) {
@@ -1456,38 +1421,7 @@ const getUser = ({ params, response }: { params: { address: string }; response: 
   }
 }
 
-const addBook = async ({ request, response }: { request: any; response: any }) => {
-  const body = await request.body()
-  const book: IBook = body.value
-  books.push(book)
-  response.body = { message: 'OK' }
-  response.status = 200
-}
-
-const updateBook = async ({ params, request, response }: { params: { isbn: string }; request: any; response: any }) => {
-  let book: IBook | undefined = searchBookByIsbn(params.isbn)
-  if (book) {
-    const body = await request.body()
-    const updateInfos: { author?: string; title?: string } = body.value
-    book = { ...book, ...updateInfos}
-    books = [...books.filter(book => book.isbn !== params.isbn), book]
-    response.status = 200
-    response.body = { message: 'OK' }
-  } else {
-    response.status = 404
-    response.body = { message: `Book not found` }
-  }
-}
-
-const deleteBook = ({ params, response }: { params: { isbn: string }; response: any }) => {
-  books = books.filter(book => book.isbn !== params.isbn)
-  response.body = { message: 'OK' }
-  response.status = 200
-}
-
-/* return the book if found and undefined if not */
-const searchBookByIsbn = (isbn: string): ( IBook | undefined ) => books.filter(book => book.isbn === isbn )[0]
 
 const searchUserByAddress = (address: string): (IUser | undefined ) => users.filter(user => user.address === address)[0]
 
-export { getBooks, getBook, addBook, updateBook, deleteBook, getUsers, getUser }
+export { getUsers, getUser}
